@@ -13,7 +13,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18' # 或者您项目需要的 Node.js 版本
+        node-version: '22' # 或者您项目需要的 Node.js 版本
 
     - name: Install web-ext
       run: npm install -g web-ext
