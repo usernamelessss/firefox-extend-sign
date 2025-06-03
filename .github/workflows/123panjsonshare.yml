@@ -1,4 +1,4 @@
-name: Sign Firefox Extension and Commit to Repo
+name: 123 pan share
 
 on:
   workflow_dispatch:
