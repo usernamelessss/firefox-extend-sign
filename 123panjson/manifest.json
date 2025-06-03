@@ -1,0 +1,63 @@
+{
+  "name": "123盘 Json Share",
+  "version": "0.1",
+  "description": "123云盘 秒传分享/提取",
+  "manifest_version": 3,
+  "icons": {
+    "48": "icons/48.png",
+    "96": "icons/96.png",
+    "128": "icons/128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png",
+      "48": "icons/48.png"
+    }
+  },
+  "host_permissions": [
+    "https://www.123pan.com/*",
+    "https://www.123865.com/*",
+    "https://www.123684.com/*",
+    "https://www.123912.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.123pan.com/*",
+        "https://www.123865.com/*",
+        "https://www.123684.com/*",
+        "https://www.123912.com/*"
+      ],
+      "exclude_matches": [
+        "https://www.123pan.com/s/*",
+        "https://www.123865.com/s/*",
+        "https://www.123684.com/s/*",
+        "https://www.123912.com/s/*"
+      ],
+      "js": [
+        "dist/js/initIndex.js"
+      ],
+      "css": [
+        "dist/css/index.css"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+   "browser_specific_settings": {
+    "gecko": {
+      "id": "123pan@rjy.com"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["dist/web_accessible_resources/init.js"],
+      "matches": [
+        "https://www.123pan.com/*",
+        "https://www.123865.com/*",
+        "https://www.123684.com/*",
+        "https://www.123912.com/*"
+      ]
+    }
+  ]
+}
