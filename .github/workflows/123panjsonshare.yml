@@ -19,7 +19,7 @@ jobs:
       run: npm install -g web-ext
 
     - name: Build and Sign Extension
-      run: web-ext sign --source-dir 123panjson --api-key ${{ secrets.AMO_ISSUER }} --api-secret ${{ secrets.AMO_SECRET }} --artifacts-dir web-ext-artifacts
+      run: web-ext sign --source-dir 123panjson --api-key ${{ secrets.AMO_ISSUER }} --api-secret ${{ secrets.AMO_SECRET }} --channel "unlisted"
       env:
         WEB_EXT_API_KEY: ${{ secrets.AMO_ISSUER }}
         WEB_EXT_API_SECRET: ${{ secrets.AMO_SECRET }}
