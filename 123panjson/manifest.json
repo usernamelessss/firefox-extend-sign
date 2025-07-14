@@ -51,7 +51,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["dist/web_accessible_resources/init.js"],
+      "resources": ["dist/web_accessible_resources/*"],
       "matches": [
         "https://www.123pan.com/*",
         "https://www.123865.com/*",
