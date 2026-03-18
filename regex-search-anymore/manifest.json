@@ -1,17 +1,13 @@
 {
   "manifest_version": 3,
   "name": "regex-search-anymore",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Search page content using JS RegExps",
   "icons": {
     "48": "icons/48x48.png",
     "64": "icons/default-64.png",
     "96": "icons/96x96.png",
     "128": "icons/128x128.png"
-  },
-  "browser_action": {
-    "default_icon": "icons/96x96.png",
-    "default_title": "regex-search-anymore"
   },
   "browser_specific_settings": {
     "gecko": {
@@ -24,20 +20,18 @@
     }
   },
   "permissions": [
-    "activeTab",
-    "scripting",
-    "storage"
+    "activeTab"
   ],
   "action": {
-    "default_icon": "icons/128.png",
+    "default_icon": "icons/default-64.png",
     "default_title": "Regex Search",
     "default_popup": "popup.html"
   },
   "commands": {
     "_execute_action": {
       "suggested_key": {
-        "default": "Ctrl+Alt+F",
-        "mac": "Command+Alt+F"
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
       },
       "description": "Activate the plugin to start the search"
     }
@@ -50,7 +44,7 @@
       "js": [
         "content.js"
       ],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     }
   ]
 }
