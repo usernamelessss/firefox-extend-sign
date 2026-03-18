@@ -23,67 +23,79 @@ jobs:
       contents: write # 授予写入仓库内容的权限
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        fetch-depth: 0 # 获取完整的历史记录，以便进行新的提交
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0 # 获取完整的历史记录，以便进行新的提交
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22' # 或者您项目所需的 Node.js 版本
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' # 或者您项目所需的 Node.js 版本
 
-    - name: Install web-ext
-      run: npm install -g web-ext
+      - name: Install web-ext
+        run: npm install -g web-ext
 
-    - name: Build and Sign Extension
-      run: web-ext sign --source-dir ${{env.SOURCE_DIR}} --api-key ${{ secrets.AMO_ISSUER }} --api-secret ${{ secrets.AMO_SECRET }} --artifacts-dir ./web-ext-artifacts --channel "unlisted"
-      env:
-        WEB_EXT_API_KEY: ${{ secrets.AMO_ISSUER }}
-        WEB_EXT_API_SECRET: ${{ secrets.AMO_SECRET }}
+      - name: Update Manifest Version
+        run: |
+          # 确保 jq 已安装（GitHub Runner 默认自带）
+          # 读取输入参数并修改 manifest.json 中的 version 字段
+          # 注意：这里假设你的 manifest.json 在 ${{ env.SOURCE_DIR }} 目录下
+          jq '.version = "${{ github.event.inputs.version_tag }}"' ${{ env.SOURCE_DIR }}/manifest.json > manifest.json.tmp && mv manifest.json.tmp ${{ env.SOURCE_DIR }}/manifest.json
+          
+          echo "Successfully updated manifest.json to version ${{ github.event.inputs.version_tag }}"
 
-    - name: Create Releases Directory if not exists
-      run: mkdir -p ./releases # 创建 releases 目录，如果不存在
+      - name: Build and Sign Extension
+        run: web-ext sign --source-dir ${{env.SOURCE_DIR}} --api-key ${{ secrets.AMO_ISSUER }} --api-secret ${{ secrets.AMO_SECRET }} --artifacts-dir ./web-ext-artifacts --channel "unlisted"
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_SECRET }}
 
-    - name: Find Signed XPI File
-      id: find_xpi
-      run: |
-        SIGNED_XPI_PATH=$(find ./web-ext-artifacts -name "*.xpi" -print -quit)
-        if [ -z "$SIGNED_XPI_PATH" ]; then
-          echo "::error::未找到签名后的 .xpi 文件！"
-          exit 1
-        fi
-        echo "FOUND_XPI_PATH=$SIGNED_XPI_PATH" >> $GITHUB_OUTPUT
+      - name: Create Releases Directory if not exists
+        run: mkdir -p ./releases # 创建 releases 目录，如果不存在
 
-    - name: Move Signed XPI to Releases Directory
-      run: |
-        # 确保文件名称包含版本信息，避免覆盖
-        FILENAME=$(basename ${{ steps.find_xpi.outputs.FOUND_XPI_PATH }})
-        NEW_FILENAME="my_extension_${{ github.event.inputs.version_tag }}_signed.xpi"
-        mv ${{ steps.find_xpi.outputs.FOUND_XPI_PATH }} ./releases/$NEW_FILENAME
-        echo "Moved $FILENAME to ./releases/$NEW_FILENAME"
+      - name: Find Signed XPI File
+        id: find_xpi
+        run: |
+          SIGNED_XPI_PATH=$(find ./web-ext-artifacts -name "*.xpi" -print -quit)
+          if [ -z "$SIGNED_XPI_PATH" ]; then
+            echo "::error::未找到签名后的 .xpi 文件！"
+            exit 1
+          fi
+          echo "FOUND_XPI_PATH=$SIGNED_XPI_PATH" >> $GITHUB_OUTPUT
 
-    - name: Configure Git
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Move Signed XPI to Releases Directory
+        run: |
+          # 创建特定扩展名的存放目录
+          mkdir -p "./releases/${{ github.event.inputs.extend_name }}"
+          # 定义新文件名
+          NEW_FILENAME="${{ github.event.inputs.extend_name }}_${{ github.event.inputs.version_tag }}.xpi"
+          # 执行移动
+          mv "${{ steps.find_xpi.outputs.FOUND_XPI_PATH }}" "./releases/${{ github.event.inputs.extend_name }}/$NEW_FILENAME"
+          # 日志输出
+          echo "Moved to ./releases/${{ github.event.inputs.extend_name }}/$NEW_FILENAME"
 
-    - name: Add and Commit Signed XPI
-      run: |
-        git add ./releases/
-        git commit -m "feat: Add signed Firefox extension for ${{ github.event.inputs.version_tag }}"
-        echo "Committed signed XPI."
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Push Changes
-      run: git push
-      # 注意：默认情况下，git push 会推送到触发工作流的同一分支
-      # 如果你希望推送到特定分支，例如 'releases'，则可以修改为：
-      # run: git push origin HEAD:releases # 将当前 HEAD 推送到 releases 分支
+      - name: Add and Commit Signed XPI
+        run: |
+          git add ./releases/
+          git commit -m "feat: Add signed Firefox extension for ${{ github.event.inputs.version_tag }}"
+          echo "Committed signed XPI."
 
-    - name: Upload Signed XPI as Artifact (Optional)
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${github.event.inputs.extend_name}}-${{ github.event.inputs.version_tag }}
-        path: ./releases/*.xpi
-        # 可以选择也作为 artifact 上传，以便在 GitHub Actions UI 中方便下载
+      - name: Push Changes
+        run: git push
+        # 注意：默认情况下，git push 会推送到触发工作流的同一分支
+        # 如果你希望推送到特定分支，例如 'releases'，则可以修改为：
+        # run: git push origin HEAD:releases # 将当前 HEAD 推送到 releases 分支
+
+      - name: Upload Signed XPI as Artifact (Optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${github.event.inputs.extend_name}}-${{ github.event.inputs.version_tag }}
+          path: ./releases/*.xpi
+          # 可以选择也作为 artifact 上传，以便在 GitHub Actions UI 中方便下载
