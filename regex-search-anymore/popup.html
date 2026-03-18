@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="dMain" hidden>
+            <span id="selection" title="Current selection"></span>
+            <span id="separator">/</span>
+            <span id="matchCounter" title="Matches highlighted"></span>
+            <span id="asterisk" title="You have changed the regex in the input field since the last search">*</span>
+            <input id="regexField" type="text" value="" placeholder="regex" />
+            <input id="flagsField" type="text" value="" placeholder="flags" />
+            <button id="bQuicksearch" tabindex="-1" title="Highlight all matches">🔎</button>
+            <button id="bClear" tabindex="-1" title="Clear all matches">🚫</button>
+            <button id="bNext" tabindex="-1" title="Select next match">▼</button>
+            <button id="bPrev" tabindex="-1" title="Select previous match">▲</button>
+        </div>
+        <div id="dError">
+            <span id="errorText">Unknown error happened, check the console</span>
+        </div>
+    </body>
+    <script src="popup.js"></script>
+</html>

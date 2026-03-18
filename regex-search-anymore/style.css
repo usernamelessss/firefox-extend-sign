@@ -1,0 +1,29 @@
+body {
+    display: block;
+    width: max-content;
+}
+
+#selection {
+    text-align: right;
+}
+
+#separator {
+    font-size: 0.75em;
+}
+
+#matchCounter {
+    text-align: right;
+}
+
+#asterisk {
+    color: grey;
+}
+
+#flagsField {
+    display: inline-block; 
+    max-width: 3.5em;
+}
+
+#errorText {
+    font-family: monospace;
+}
