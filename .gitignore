@@ -1,1 +1,5 @@
 .idea/
+web-ext-artifacts/
+
+/**/.amo-upload-uuid
+/*.ps1
