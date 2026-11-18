@@ -8,6 +8,16 @@ on:
         required: true
         type: string
         default: "Ease-Bookmarks"
+      source_repo:
+        description: '从其他仓库拉取扩展源码（如 usernamelessss/Ease-Bookmarks），留空则用本仓库里的同名文件夹'
+        required: false
+        type: string
+        default: ""
+      source_ref:
+        description: '源码仓库的分支或标签（如 firefox），留空用默认分支'
+        required: false
+        type: string
+        default: ""
       version_tag:
         description: '版本号，留空则使用 manifest.json 里的版本（同一扩展每次签名版本号不能重复）'
         required: false
@@ -40,7 +50,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: recursive # 扩展目录如果是子模块也能拉下来
+
+      - name: Checkout extension source
+        if: ${{ inputs.source_repo != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.source_repo }}
+          ref: ${{ inputs.source_ref }}
+          path: ${{ inputs.extend_name }}
+
+      - name: Exclude extension source from commit
+        if: ${{ inputs.source_repo != '' }}
+        run: echo "$EXT_NAME/" >> .git/info/exclude # 拉下来的源码不提交回本仓库
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
