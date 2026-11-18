@@ -1,0 +1,181 @@
+/* 根据该字体大小，统一调整文章整体大小 */
+/* 间距，其他字体，代码块以及注脚 */
+/* 不会控制微信代码块 */
+#usage {
+  margin-top: -15px;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0px;
+  word-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: justify;
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;
+}
+
+/* 颜色管理 */
+#usage a {
+  color: #3e64ff;
+}
+#usage code {
+  color: var(--primary-color);
+  background-color: #efefef;
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+}
+/* 避免被翻译（但保持原来样式） */
+#usage strong > code {
+  color: unset;
+  background: none;
+  font-size: 16px;
+}
+#usage .footnote-word,
+#usage .footnote-ref {
+  color: #004a7c;
+}
+#usage .footnote-item em {
+  color: #004a7c;
+}
+
+/* 统一间距 */
+#usage p,
+#usage section,
+#usage h1,
+#usage h2,
+#usage h3,
+#usage h4,
+#usage h5,
+#usage h6,
+#usage pre,
+#usage figure,
+#usage ul,
+#usage hr {
+  margin: 1em 0;
+  color: #333;
+}
+
+#usage * {
+  line-height: 1.6 !important;
+}
+
+#usage hr {
+  border-top: 1px solid #dfe2e5
+}
+
+/* 标题调整 */
+#usage h1 {
+  font-size: 1.4em;
+}
+#usage h2 {
+  font-size: 1.3em;
+}
+#usage h1,
+#usage h2 {
+  padding-bottom: .3em;
+  border-bottom: 1px solid #dfe2e5;
+}
+#usage h3 {
+  font-size: 1.2em;
+}
+#usage h4 {
+  font-size: 1.1em;
+}
+#usage h5 {
+  font-size: 1em;
+}
+#usage h6 {
+  font-size: 1em;
+}
+
+/* 段落调整 */
+#usage p {
+  padding: 0;
+  font-size: inherit;
+  color: #333;
+}
+#usage blockquote {
+  background: none;
+  border-left: 4px solid #ddd;
+  padding: 0 1em;
+}
+#usage blockquote p {
+  margin: 0;
+  color: #666;
+}
+#usage strong {
+  color: #333;
+}
+
+#usage a {
+  font-weight: normal;
+  border-color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted;
+  padding-bottom: 1px;
+}
+
+/* 列表调整 */
+#usage li section {
+  margin-top: .3em;
+  margin-bottom: .3em;
+  font-weight: normal;
+}
+#usage li ul {
+  margin: 0;
+}
+
+/* 代码块调整 */
+#usage pre {
+  border-radius: 4px;
+}
+#usage section pre {
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+#usage p code {
+  font-size: .875em;
+}
+#usage pre code {
+  font-size: .875em;
+}
+
+#usage figure img {
+  max-width: 100%;
+  width: auto;
+  margin: 0 auto;
+}
+
+/* table 调整 */
+#usage table tr th,
+#usage table tr td {
+  font-size: 1em;
+}
+
+/* 注脚调整 */
+#usage .footnotes-sep {
+  font-size: 1.3em;
+}
+#usage .footnote-item {
+  margin: .4em 0;
+}
+#usage .footnote-item * {
+  line-height: 1.4 !important;
+}
+#usage .footnote-item p {
+  margin: 0;
+  font-size: .9em;
+}
+#usage .footnote-item em {
+  font-style: normal;
+  padding-inline-start: .5em;
+}
+#usage .footnote-item span {
+  flex: 0 0 1.5em;
+  margin-inline-end: 10px;
+  font-size: .9em;
+}

@@ -1,0 +1,231 @@
+{
+  "pluginDesc":
+  {
+    "message": "使いやすいブックマーク・マネージャー"
+  },
+
+  "bookmarksManager":
+  {
+    "message": "ブックマーク マネージャ"
+  },
+  "options":
+  {
+    "message": "オプション"
+  },
+
+  "searchPlaceholder":
+  {
+    "message": "ブックマークを検索..."
+  },
+  "noBookmarksTip":
+  {
+    "message": "このフォルダは空です"
+  },
+  "noSearchResultsTip":
+  {
+    "message": "一致する結果は見つかりませんでした"
+  },
+
+  "openAll":
+  {
+    "message": "すべて開"
+  },
+  "openInNewTab":
+  {
+    "message": "新しいタブで開く"
+  },
+  "openInBackgroundTab":
+  {
+    "message": "バックグラウンドで開きます"
+  },
+  "openInIncognitoWindow":
+  {
+    "message": "シークレット ウィンドウで開"
+  },
+  "addBookmark":
+  {
+    "message": "新しいブックマークを追加"
+  },
+  "addFolder":
+  {
+    "message": "新しいフォルダを追加"
+  },
+  "showInFolder":
+  {
+    "message": "フォルダを開く"
+  },
+  "setAsStartupFolder":
+  {
+    "message": "スタートアップディレクトリに設定"
+  },
+  "updateToCurrentURL":
+  {
+    "message": "現在のURLに更新しました"
+  },
+  "edit":
+  {
+    "message": "編集"
+  },
+  "delete":
+  {
+    "message": "削除"
+  },
+  "deleteFolderConfirm":
+  {
+    "message": "これで、そのフォルダ内のブックマーク（$1）もすべて削除されますよね？",
+    "placeholders": {
+      "bookmarksNum": {
+        "content": "$1"
+      }
+    }
+  },
+  "rename":
+  {
+    "message": "名前を変更"
+  },
+
+  "editBookmark":
+  {
+    "message": "ブックマークを編集"
+  },
+  "editFolderName":
+  {
+    "message": "フォルダ名の変更"
+  },
+  "save":
+  {
+    "message": "保存"
+  },
+  "cancel":
+  {
+    "message": "キャンセル"
+  },
+  "name":
+  {
+    "message": "名前"
+  },
+  "URL":
+  {
+    "message": "URL"
+  },
+
+  "themeColor":
+  {
+    "message": "テーマカラー:"
+  },
+  "auto":
+  {
+    "message": "システムデフォルト"
+  },
+  "light":
+  {
+    "message": "ライトカラー"
+  },
+  "dark":
+  {
+    "message": "ダーク"
+  },
+  "openIn":
+  {
+    "message": "ブックマークの開き方:"
+  },
+  "currentTab":
+  {
+    "message": "現在のページ"
+  },
+  "newTab":
+  {
+    "message": "新しいタブ"
+  },
+  "backgroundTab":
+  {
+    "message": "新しいタブ（バックステージ）"
+  },
+  "hoverEnter": {
+      "message": "カタログホバーアクセス:"
+  },
+  "off": {
+      "message": "閉じます"
+  },
+  "slow": {
+      "message": "遅い"
+  },
+  "moderate": {
+      "message": "控えめ"
+  },
+  "fast": {
+      "message": "急げ!"
+  },
+  "startupFolder": {
+      "message": "起動場所:"
+  },
+  "folderXTitle": {
+      "message": "フォルダの右ボタンメニューの設定または変更によってサブディレクトリから起動してください..."
+  },
+  "lastFolder": {
+      "message": "最後のディレクトリ"
+  },
+  "lastFolderAndScrollBar": {
+      "message": "最後のディレクトリとスクロール バー"
+  },
+  "scrollDirection": {
+      "message": "スクロール方向:"
+  },
+  "scrollDirectionX": {
+      "message": "横"
+  },
+  "scrollDirectionY": {
+      "message": "縦"
+  },
+  "layoutCols": {
+      "message": "レイアウト列の数:"
+  },
+  "minItemsEachCol": {
+      "message": "列あたりのバーの数:"
+  },
+  "minItemsEachColTips": {
+      "message": "注: レイアウト列の数が複数ある場合に有効です。1 または 10 を推奨"
+  },
+  "alias": {
+      "message": "エイリアス:"
+  },
+  "customIcon": {
+      "message": "Custom icon:"
+  },
+  "selectFile": {
+      "message": "Select file"
+  },
+  "reset": {
+      "message": "Reset"
+  },
+  "customIconTip": {
+      "message": "注：正方形で透過性のある背景画像（png形式）を選択してください。"
+  },
+  "customCSS": {
+      "message": "Custom style:"
+  },
+  "example": {
+      "message": "For example:"
+  },
+  "BackupAndRecovery": {
+      "message": "Backup and Recovery:"
+  },
+  "import": {
+      "message": "Import"
+  },
+  "export": {
+      "message": "Export"
+  },
+  "resetConfigTip": {
+      "message": "This will clear all configurations, are you sure?"
+  },
+  "setInvalidTips": {
+      "message": "Invalid option! Optional Settings:"
+  },
+  "Built_inVariables": {
+      "message": "Built-in variables"
+  },
+  "Built_inVariablesTip": {
+      "message": "Note: Used to switch/modify minor features within this plugin (or the default behavior of the browser itself)"
+  }
+}

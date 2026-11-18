@@ -1,0 +1,231 @@
+{
+  "pluginDesc":
+  {
+    "message": "簡單易用的書籤管理器"
+  },
+
+  "bookmarksManager":
+  {
+    "message": "書籤管理器"
+  },
+  "options":
+  {
+    "message": "選項"
+  },
+  
+  "searchPlaceholder":
+  {
+    "message": "搜索書籤..."
+  },
+  "noBookmarksTip":
+  {
+    "message": "此文件夾中沒有內容"
+  },
+  "noSearchResultsTip":
+  {
+    "message": "未找到任何搜索結果"
+  },
+
+  "openAll":
+  {
+    "message": "打開全部"
+  },
+  "openInNewTab":
+  {
+    "message": "在新標籤中打開"
+  },
+  "openInBackgroundTab":
+  {
+    "message": "在後台打開"
+  },
+  "openInIncognitoWindow":
+  {
+    "message": "在隱身窗口中打開"
+  },
+  "addBookmark":
+  {
+    "message": "新建書籤"
+  },
+  "addFolder":
+  {
+    "message": "新建文件夾"
+  },
+  "showInFolder":
+  {
+    "message": "在文件夾中顯示"
+  },
+  "setAsStartupFolder":
+  {
+    "message": "設為啟動目錄"
+  },
+  "updateToCurrentURL":
+  {
+    "message": "更新為當前網址"
+  },
+  "edit":
+  {
+    "message": "編輯"
+  },
+  "delete":
+  {
+    "message": "刪除"
+  },
+  "deleteFolderConfirm":
+  {
+    "message": "這還將刪除此文件夾下的所有書籤($bookmarksNum$個)\n確定嗎?",
+    "placeholders": {
+      "bookmarksNum": {
+        "content": "$1"
+      }
+    }
+  },
+  "rename":
+  {
+    "message": "重命名"
+  },
+
+  "editBookmark":
+  {
+    "message": "編輯書籤"
+  },
+  "editFolderName":
+  {
+    "message": "重命名文件夾"
+  },
+  "save":
+  {
+    "message": "保存"
+  },
+  "cancel":
+  {
+    "message": "取消"
+  },
+  "name":
+  {
+    "message": "名稱"
+  },
+  "URL":
+  {
+    "message": "網址"
+  },
+
+  "themeColor":
+  {
+    "message": "主題色:"
+  },
+  "auto":
+  {
+    "message": "跟隨系統"
+  },
+  "light":
+  {
+    "message": "淺色"
+  },
+  "dark":
+  {
+    "message": "深色"
+  },
+  "openIn":
+  {
+    "message": "書籤打開方式:"
+  },
+  "currentTab":
+  {
+    "message": "當前頁"
+  },
+  "newTab":
+  {
+    "message": "新標籤"
+  },
+  "backgroundTab":
+  {
+    "message": "新標籤（後臺）"
+  },
+  "hoverEnter": {
+      "message": "目錄懸停進入:"
+  },
+  "off": {
+      "message": "關閉"
+  },
+  "slow": {
+      "message": "緩慢"
+  },
+  "moderate": {
+      "message": "適中"
+  },
+  "fast": {
+      "message": "快速"
+  },
+  "startupFolder": {
+      "message": "啟動位置:"
+  },
+  "folderXTitle": {
+      "message": "請通過文件夾右鍵菜單設置或更改從子目錄啟動..."
+  },
+  "lastFolder": {
+      "message": "上次目錄"
+  },
+  "lastFolderAndScrollBar": {
+      "message": "上次目錄和滾動條"
+  },
+  "scrollDirection": {
+      "message": "滾動方向:"
+  },
+  "scrollDirectionX": {
+      "message": "橫向"
+  },
+  "scrollDirectionY": {
+      "message": "縱向"
+  },
+  "layoutCols": {
+      "message": "佈局列數:"
+  },
+  "minItemsEachCol": {
+      "message": "每列條數:"
+  },
+  "minItemsEachColTips": {
+      "message": "注：佈局列數為多列時有效；推薦1或者10"
+  },
+  "alias": {
+      "message": "別名:"
+  },
+  "customIcon": {
+      "message": "自定義圖標:"
+  },
+  "selectFile": {
+      "message": "選擇文件"
+  },
+  "reset": {
+      "message": "重置"
+  },
+  "customIconTip": {
+      "message": "注：請選擇方形、透明背景圖片（png格式）"
+  },
+  "customCSS": {
+      "message": "自定義樣式:"
+  },
+  "example": {
+      "message": "例如:"
+  },
+  "BackupAndRecovery": {
+      "message": "備份與恢復:"
+  },
+  "import": {
+      "message": "匯入"
+  },
+  "export": {
+      "message": "匯出"
+  },
+  "resetConfigTip": {
+      "message": "這將清空所有配置，確定嗎？"
+  },
+  "setInvalidTips": {
+      "message": "無效選項！可選設置:"
+  },
+  "Built_inVariables": {
+      "message": "內置參數："
+  },
+  "Built_inVariablesTip": {
+      "message": "注：用於 開關/修改 本插件內的小衆功能（或者瀏覽器本身的默認行爲）"
+  }
+}

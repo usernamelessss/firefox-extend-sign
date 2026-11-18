@@ -1,0 +1,71 @@
+:root {
+    --body-width: 720px;
+    --base-height: 42px;
+    --primary-color: #1abc9c;
+}
+html {
+    scrollbar-width: none;
+}
+
+/* 页面内的输入框滚动条需要显示 */
+textarea {
+  scrollbar-width: thin;
+}
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    margin: 0 auto;
+    width: var(--body-width);
+    min-height: 100vh;
+    font-size: 16px;
+    box-shadow: 0 0 60px rgb(0 0 0 / 10%);
+}
+.btns {
+    position: fixed;
+    top: 4px;
+    display: flex;
+    gap: 9px;
+}
+/* inset-inline-end不兼容chrome87以下版本 */
+html:not([dir="rtl"]) .btns {
+    right: calc(50vw - var(--body-width) / 2 + 30px);
+}
+html[dir="rtl"] .btns {
+    left: calc(50vw - var(--body-width) / 2 + 30px);
+}
+
+.btns img {
+    width: 24px;
+}
+
+.btns:hover > .item {
+    display: block;
+}
+.list,
+.item {
+    user-select: none;
+    opacity: .5;
+}
+.item {
+    display: none;
+    border-bottom: 2px solid transparent;
+}
+.item.active {
+    opacity: 1;
+    pointer-events: none;
+}
+.item:hover {
+    opacity: 1;
+    border-color: var(--primary-color);
+}
+
+.hash-tab {
+    display: none;
+    padding: 15px 30px;
+    min-height: 100vh;
+}
+.hash-tab.active {
+    display: block;
+}

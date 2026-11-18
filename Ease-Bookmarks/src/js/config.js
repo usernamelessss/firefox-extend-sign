@@ -1,0 +1,126 @@
+"use strict";
+
+const chrome = browser;
+const bookmarkNode = {
+  root: 'root________',
+  main: 'toolbar_____',
+  other: 'unfiled_____',
+  isTop(id) {
+    return id.endsWith('_____');
+  },
+}
+
+window.BM = {
+  // 选项必须与input的name和value一致
+  default: {
+    themeColor: 'light',
+    openIn: 3, // 0b11, 0-3 详细说明参见 openUrl 方法
+    hoverEnter: 500, // {0,300,500,800}
+    scrollDirection: 'y',
+    layoutCols: 1,
+    minItemsPerCol: 10, // 1-16；避免滚动条
+    // 1 书签栏 2 其他书签（根目录为0）
+    // -1 目录，-2 目录和滚动条（从上次位置启动）
+    startup: bookmarkNode.main,
+    customCSS: '', // 自定义css
+  },
+  defaultSys: {
+    bodyWidth_1: '280px',
+    bodyWidth_2: '400px',
+    bodyWidth_3: '530px',
+    bodyWidth_4: '660px',
+    bodyWidth_5: '800px',
+    clearScrollPosWhenExitFolder: 1,
+    compositionEvent: 0,
+    fastCreate: 0, // 0-2
+    faviconAPI: 'https://api.xinac.net/icon/?url={hostname}',
+    hotkeyCancelSeleted: 'Space',
+    hotkeyDelete: '-Delete',
+    hotkeyEnterSecond: 'F9',
+    keepLastSearchValue: 0,
+    keepMaxCols: 0, // 0-1 保持最大宽度
+    // 1-2
+    // 1：仅url 
+    // 2：url和title
+    openBookmarkAfterCurrentTab: 0, // 当前标签页右边打开书签
+    searchResultSort: 1, // 搜索结果排序
+    searchOnlyBookmarks: 0, // 0-1 搜索时只显示书签，不显示文件夹
+    updateBookmarkOpt: 1,
+  },
+  set: function(name, value) {
+    if (this.defaultSys.hasOwnProperty(name)) {
+      if (value == BM.defaultSys[name]) {
+        chrome.storage.sync.remove(name);
+      } else {
+        chrome.storage.sync.set({[name]: value});
+      }
+    } else {
+      console.log(L('setInvalidTips'), Object.keys(BM.defaultSys).join());
+    }
+  }
+}
+
+// @TODO 改为 localStorage？
+// option页面自动同步到 storage，实现有点麻烦
+var loadSettings = new Promise(function(resolve, reject) {
+  chrome.storage.sync.get(null, function(items) {
+    // console.log(items);
+    BM.settings = Object.assign({}, BM.default, BM.defaultSys, items);
+    resolve();
+  });
+});
+
+BM.startupReal = localStorage.getItem('startupID') || BM.default.startup;
+
+var loadPreItems;
+
+// 提前读取bookmarks数据，优化启动速度
+if (location.pathname === '/popup.html') {
+  loadPreItems = new Promise(function(resolve, reject) {
+    chrome.bookmarks.getChildren(BM.startupReal.toString(), (results) => {
+      // console.log(results);
+      // 启动文件夹被删除了
+      if (typeof results === 'undefined') {
+        localStorage.setItem('startupID', BM.default.startup);
+        chrome.storage.sync.set({startup: BM.default.startup}, () => {
+          safeReload();
+        });
+      }
+      BM.preItems = results;
+      resolve();
+    });
+  });
+}
+
+const $ = (css, d = document) => d.querySelector(css);
+const $$ = (css, d = document) => d.querySelectorAll(css);
+const L = chrome.i18n.getMessage;
+
+var lang = chrome.i18n.getUILanguage();
+if (['ar', 'he', 'fa', 'ur', 'ku', 'ba', 'dv', 'hy'].includes(lang)) {
+  document.dir = 'rtl';
+}
+
+function setStartupID(folderID) {
+  const isFFBookmark = isNaN(folderID);
+  !isFFBookmark && localStorage.setItem('startupFromLast', folderID);
+  isFFBookmark && localStorage.setItem('startupID', folderID);
+  
+  // firefox的书签ID是字母
+  if (isFFBookmark) folderID = 0;
+  
+  folderID > -1 && localStorage.removeItem('startupFromLast');
+  folderID > -2 && localStorage.removeItem('LastScrollPos');
+}
+
+function safeReload(maxCount = 3) {
+  const url = new URL(window.location);
+  const params = url.searchParams;
+  const count = parseInt(params.get('_r') || '0');
+  
+  if (count < maxCount) {
+    params.set('_r', (count + 1).toString());
+    url.search = params.toString();
+    location.replace(url.toString());
+  }
+}

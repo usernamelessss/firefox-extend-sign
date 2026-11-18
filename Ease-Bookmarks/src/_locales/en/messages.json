@@ -1,0 +1,231 @@
+{
+  "pluginDesc":
+  {
+    "message": "Easy to use bookmark manager"
+  },
+
+  "bookmarksManager":
+  {
+    "message": "Bookmarks Manager"
+  },
+  "options":
+  {
+    "message": "Options"
+  },
+
+  "searchPlaceholder":
+  {
+    "message": "Search Bookmarks..."
+  },
+  "noBookmarksTip":
+  {
+    "message": "This folder is empty"
+  },
+  "noSearchResultsTip":
+  {
+    "message": "No search results found"
+  },
+
+  "openAll":
+  {
+    "message": "Open all"
+  },
+  "openInNewTab":
+  {
+    "message": "Open in new tab"
+  },
+  "openInBackgroundTab":
+  {
+    "message": "Open in background tab"
+  },
+  "openInIncognitoWindow":
+  {
+    "message": "Open in Incognito window"
+  },
+  "addBookmark":
+  {
+    "message": "Add new bookmark"
+  },
+  "addFolder":
+  {
+    "message": "Add new folder"
+  },
+  "showInFolder":
+  {
+    "message": "Show in folder"
+  },
+  "setAsStartupFolder":
+  {
+    "message": "Set as startup folder"
+  },
+  "updateToCurrentURL":
+  {
+    "message": "Update to current URL"
+  },
+  "edit":
+  {
+    "message": "Edit"
+  },
+  "delete":
+  {
+    "message": "Delete"
+  },
+  "deleteFolderConfirm":
+  {
+    "message": "This will also delete all bookmarks ($bookmarksNum$) in this folder, is it sure?",
+    "placeholders": {
+      "bookmarksNum": {
+        "content": "$1"
+      }
+    }
+  },
+  "rename":
+  {
+    "message": "Rename"
+  },
+  
+  "editBookmark":
+  {
+    "message": "Edit bookmark"
+  },
+  "editFolderName":
+  {
+    "message": "Rename folder"
+  },
+  "save":
+  {
+    "message": "Save"
+  },
+  "cancel":
+  {
+    "message": "Cancel"
+  },
+  "name":
+  {
+    "message": "Name"
+  },
+  "URL":
+  {
+    "message": "URL"
+  },
+
+  "themeColor":
+  {
+    "message": "Theme color:"
+  },
+  "auto":
+  {
+    "message": "Auto"
+  },
+  "light":
+  {
+    "message": "Light"
+  },
+  "dark":
+  {
+    "message": "Dark"
+  },
+  "openIn":
+  {
+    "message": "Open bookmarks in:"
+  },
+  "currentTab":
+  {
+    "message": "Current tab"
+  },
+  "newTab":
+  {
+    "message": "New tab"
+  },
+  "backgroundTab":
+  {
+    "message": "Background tab"
+  },
+  "hoverEnter": {
+      "message": "Hover to open folder:"
+  },
+  "off": {
+      "message": "Off"
+  },
+  "slow": {
+      "message": "Slow"
+  },
+  "moderate": {
+      "message": "Moderate"
+  },
+  "fast": {
+      "message": "Fast"
+  },
+  "startupFolder": {
+      "message": "Startup folder:"
+  },
+  "folderXTitle": {
+      "message": "Please use the folder right-click menu to set or change startup from a subdirectory..."
+  },
+  "lastFolder": {
+      "message": "Last folder"
+  },
+  "lastFolderAndScrollBar": {
+      "message": "Last folder and scrollbar"
+  },
+  "scrollDirection": {
+      "message": "Scroll Direction:"
+  },
+  "scrollDirectionX": {
+      "message": "Horizontal"
+  },
+  "scrollDirectionY": {
+      "message": "Vertical"
+  },
+  "layoutCols": {
+      "message": "Layout column(s):"
+  },
+  "minItemsEachCol": {
+      "message": "Items each column:"
+  },
+  "minItemsEachColTips": {
+      "message": "Note: valid when the number of Layout columns is multiple.\n1 or 10 is recommended"
+  },
+  "alias": {
+      "message": "Alias:"
+  },
+  "customIcon": {
+      "message": "Custom icon:"
+  },
+  "selectFile": {
+      "message": "Select file"
+  },
+  "reset": {
+      "message": "Reset"
+  },
+  "customIconTip": {
+      "message": "Note: Please select square, transparent-background image (png format)"
+  },
+  "customCSS": {
+      "message": "Custom style:"
+  },
+  "example": {
+      "message": "For example:"
+  },
+  "BackupAndRecovery": {
+      "message": "Backup and Recovery:"
+  },
+  "import": {
+      "message": "Import"
+  },
+  "export": {
+      "message": "Export"
+  },
+  "resetConfigTip": {
+      "message": "This will clear all configurations, are you sure?"
+  },
+  "setInvalidTips": {
+      "message": "Invalid option! Optional Settings:"
+  },
+  "Built_inVariables": {
+      "message": "Built-in variables"
+  },
+  "Built_inVariablesTip": {
+      "message": "Note: Used to switch/modify minor features within this plugin (or the default behavior of the browser itself)"
+  }
+}

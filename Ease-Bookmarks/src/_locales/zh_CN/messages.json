@@ -1,0 +1,231 @@
+{
+  "pluginDesc":
+  {
+    "message": "简单易用的书签管理器"
+  },
+
+  "bookmarksManager":
+  {
+    "message": "书签管理器"
+  },
+  "options":
+  {
+    "message": "选项"
+  },
+
+  "searchPlaceholder":
+  {
+    "message": "搜索书签..."
+  },
+  "noBookmarksTip":
+  {
+    "message": "此文件夹中没有内容"
+  },
+  "noSearchResultsTip":
+  {
+    "message": "未找到任何搜索结果"
+  },
+
+  "openAll":
+  {
+    "message": "打开全部"
+  },
+  "openInNewTab":
+  {
+    "message": "在新标签中打开"
+  },
+  "openInBackgroundTab":
+  {
+    "message": "在后台打开"
+  },
+  "openInIncognitoWindow":
+  {
+    "message": "在隐身窗口中打开"
+  },
+  "addBookmark":
+  {
+    "message": "新建书签"
+  },
+  "addFolder":
+  {
+    "message": "新建文件夹"
+  },
+  "showInFolder":
+  {
+    "message": "在文件夹中显示"
+  },
+  "setAsStartupFolder":
+  {
+    "message": "设为启动目录"
+  },
+  "updateToCurrentURL":
+  {
+    "message": "更新为当前网址"
+  },
+  "edit":
+  {
+    "message": "编辑"
+  },
+  "delete":
+  {
+    "message": "删除"
+  },
+  "deleteFolderConfirm":
+  {
+    "message": "这还将删除此文件夹下的所有书签($bookmarksNum$个)\n确定吗?",
+    "placeholders": {
+      "bookmarksNum": {
+        "content": "$1"
+      }
+    }
+  },
+  "rename":
+  {
+    "message": "重命名"
+  },
+
+  "editBookmark":
+  {
+    "message": "编辑书签"
+  },
+  "editFolderName":
+  {
+    "message": "重命名文件夹"
+  },
+  "save":
+  {
+    "message": "保存"
+  },
+  "cancel":
+  {
+    "message": "取消"
+  },
+  "name":
+  {
+    "message": "名称"
+  },
+  "URL":
+  {
+    "message": "网址"
+  },
+
+  "themeColor":
+  {
+    "message": "主题色:"
+  },
+  "auto":
+  {
+    "message": "跟随系统"
+  },
+  "light":
+  {
+    "message": "浅色"
+  },
+  "dark":
+  {
+    "message": "深色"
+  },
+  "openIn":
+  {
+    "message": "书签打开方式:"
+  },
+  "currentTab":
+  {
+    "message": "当前页"
+  },
+  "newTab":
+  {
+    "message": "新标签"
+  },
+  "backgroundTab":
+  {
+    "message": "新标签（后台）"
+  },
+  "hoverEnter": {
+      "message": "目录悬停进入:"
+  },
+  "off": {
+      "message": "关闭"
+  },
+  "slow": {
+      "message": "缓慢"
+  },
+  "moderate": {
+      "message": "适中"
+  },
+  "fast": {
+      "message": "快速"
+  },
+  "startupFolder": {
+      "message": "启动位置:"
+  },
+  "folderXTitle": {
+      "message": "请通过文件夹右键菜单设置或更改从子目录启动..."
+  },
+  "lastFolder": {
+      "message": "上次目录"
+  },
+  "lastFolderAndScrollBar": {
+      "message": "上次目录和滚动条"
+  },
+  "scrollDirection": {
+      "message": "滚动方向:"
+  },
+  "scrollDirectionX": {
+      "message": "横向"
+  },
+  "scrollDirectionY": {
+      "message": "纵向"
+  },
+  "layoutCols": {
+      "message": "布局列数:"
+  },
+  "minItemsEachCol": {
+      "message": "每列条数:"
+  },
+  "minItemsEachColTips": {
+      "message": "注：布局列数为多列时有效；推荐1或者10"
+  },
+  "alias": {
+      "message": "别名:"
+  },
+  "customIcon": {
+      "message": "自定义图标:"
+  },
+  "selectFile": {
+      "message": "选择文件"
+  },
+  "reset": {
+      "message": "重置"
+  },
+  "customIconTip": {
+      "message": "注：请选择方形、透明背景图片（png格式）"
+  },
+  "customCSS": {
+      "message": "自定义样式:"
+  },
+  "example": {
+      "message": "例如:"
+  },
+  "BackupAndRecovery": {
+      "message": "备份与恢复:"
+  },
+  "import": {
+      "message": "导入"
+  },
+  "export": {
+      "message": "导出"
+  },
+  "resetConfigTip": {
+      "message": "这将清空所有配置，确定吗？"
+  },
+  "setInvalidTips": {
+      "message": "无效选项！可选设置:"
+  },
+  "Built_inVariables": {
+      "message": "内置参数："
+  },
+  "Built_inVariablesTip": {
+      "message": "注：用于 开关/修改 本插件内的小众功能（或者浏览器本身的默认行为）"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "manifest_version": 2,
+  "name": "Ease Bookmarks",
+  "description": "__MSG_pluginDesc__",
+  "version": "2.1.9",
+  "default_locale": "en",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "author": "qinxs",
+  "homepage_url": "https://github.com/qinxs/Ease-Bookmarks",
+
+  "browser_action": {
+    "default_title": "Ease Bookmarks",
+    "default_popup": "popup.html",
+    "default_icon": "icons/icon32.png"
+  },
+  "background": {
+    "scripts": ["eventPage.js"],
+    "persistent": true
+  },
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true,
+    "open_in_tab": true
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Q",
+        "mac": "Command+Q"
+      },
+      "description": "Activate the extension"
+    }
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "EaseBookmarks@github.qinxs",
+      "strict_min_version": "60.0"
+    }
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "bookmarks",
+    "contextMenus"
+  ]
+}

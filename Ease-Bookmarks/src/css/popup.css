@@ -1,0 +1,437 @@
+:root {
+  --height-item: 28px;
+  --body-width-cols: 1;
+  --list-cols: 1;
+  --list-rows: 10;
+  --base-font-size: 14px;
+  --scrollbar-width: 4px;
+  --direction-ratio: 1;
+
+  /* 浅色模式 */
+  --color-theme: #4db6ac;
+  --color-text: #15141a;
+  --color-nav-text: #fff;
+  --color-background: #fff;
+  --color-border: #ddd;
+  --color-hover: #cbede9;
+  --color-scrollbar-thumb: #b8c8c6;
+  --color-textbox-border: #a0b3d6;
+  --color-textbox-focus-border: #34538b;
+  --color-input-background: #fff;
+  --color-mask-background: rgba(0, 0, 0, .5);
+}
+.dark {
+  --color-theme: #369;
+  --color-text: #cbc8c4;
+  --color-nav-text: #e3e3e3;
+  --color-background: #0d1117;
+  --color-border: #666;
+  --color-hover: #2d3748;
+  --color-scrollbar-thumb: #5a616c;
+  --color-textbox-border: #666;
+  --color-textbox-focus-border: #8cb4ff;
+  --color-input-background: #000;
+  --color-mask-background: rgba(0, 0, 0, .66);
+}
+:root[dir="rtl"] {
+  --direction-ratio: -1;
+}
+body::-webkit-scrollbar {
+  width: 0;
+}
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 1px;
+  background-color: var(--color-scrollbar-thumb);
+}
+::selection {
+  background: var(--color-hover);
+}
+* {
+  box-sizing: border-box;
+  scrollbar-width: none;
+  outline: none;
+}
+.hidden {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 280px;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  user-select: none;
+  transition: width .05s;
+}
+header,
+footer {
+  padding: 0 8px;
+}
+header {
+  position: relative;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--color-border);
+}
+main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  max-height: 476px;
+  min-height: 400px;
+}
+footer {
+  width: inherit;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--color-mask-background);
+  transition: all .3s ease-out;
+  z-index: 1;
+}
+
+input {
+  color: var(--color-text);
+  border: 1px solid;
+  background-color: var(--color-input-background);
+}
+
+input::placeholder,
+.textbox:empty::before {
+  color: currentColor;
+  opacity: .5;
+}
+
+button {
+  cursor: pointer;
+  padding: .15em .5em;
+  border: 1px solid var(--color-textbox-border);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  background-color: transparent;
+  color: var(--color-text);
+  letter-spacing: 1px;
+  text-indent: 1px;
+}
+button:hover,
+button:focus {
+  color: #f0e9f6;
+  background-color: #1a73e8;
+}
+button:active {
+  outline: 1px solid var(--color-textbox-focus-border);
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+nav {
+  /* 8px 扩大点击区域 */
+  margin: 5px -8px;
+  padding: 0 8px;
+  min-height: 24px;
+  line-height: 1.5em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 16px;
+  color: #789;
+  word-break: keep-all;
+}
+#bookmark-manager,
+.nav {
+  font-size: 15px;
+  color: var(--color-theme);
+}
+.nav:empty,
+.nav:not(:empty) + #bookmark-manager {
+  display: none;
+}
+nav > a {
+  padding: 0 4px;
+  border-radius: 4px;
+  color: var(--color-nav-text);
+  background-color: var(--color-theme);
+}
+
+nav > a:last-of-type {
+  pointer-events: none;
+}
+i {
+  display: inline-block;
+  width: .65em;
+  font-style: normal;
+  text-align: center;
+}
+.folder-list,
+#search-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(var(--list-rows), var(--height-item));
+  grid-template-columns: repeat(var(--list-cols), calc(100% / var(--body-width-cols)));
+  font-size: var(--base-font-size);
+  flex: 1;
+  scrollbar-width: thin;
+  overflow: auto;
+}
+.folder-list[hidden],
+#search-list[hidden] {
+  display: none;
+}
+
+.folder-list:empty::after,
+#search-list:empty::after {
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  opacity: .8;
+}
+.folder-list.show-tip:empty::after {
+  content: "__MSG_noBookmarksTip__";
+}
+#search-list:empty::after {
+  content: "__MSG_noSearchResultsTip__";
+}
+
+#search-input {
+  width: 100%;
+  height: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+}
+#search-input::-webkit-search-cancel-button {
+  transform: translateY(-1px);
+  cursor: pointer;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  height: var(--height-item);
+  line-height: var(--height-item);
+}
+.item:hover,
+.item:focus,
+.item.active,
+.item.selected {
+  background-color: var(--color-hover);
+}
+
+.favicon {
+  width: 16px;
+  height: 16px;
+}
+.folder-list .favicon {
+  cursor: move;
+}
+.item > a {
+  /* 防止空名称文件夹不能打开 */
+  height: 100%;
+  margin-top: -0.5px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  flex: 1;
+}
+#bookmark-manager + a {
+  margin-inline-start: auto;
+}
+.btn {
+  display: flex;
+  align-items: center;
+}
+
+.btn svg {
+  opacity: .51;
+  width: 20px;
+  height: 20px;
+}
+.btn:hover svg {
+  opacity: 1;
+}
+#star-url {
+  transform: translateX(calc(-2px * var(--direction-ratio)));
+}
+
+.box {
+  position: absolute;
+  margin: 0;
+  padding: 5px;
+  font-size: var(--base-font-size);
+  border-radius: 5px;
+  background-color: var(--color-background);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+}
+
+#context-menu {
+  top:0;
+  left:0;
+  min-width: 120px;
+  max-width: 100%;
+  font-size: calc(var(--base-font-size) - 1px);
+  list-style: none;
+  border: 1px solid #bbb;
+}
+#dialog,
+#confirm {
+  left: 50%;
+  width: 96%;
+  max-width: 360px;
+  line-height: 2em;
+  border: 1px solid var(--color-border);
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+#confirm {
+  top: 25vh;
+}
+
+#context-menu > li {
+  display: none;
+  padding: 0 8px;
+  line-height: 22px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: none;
+}
+#context-menu > li:hover {
+  background: var(--color-hover);
+}
+hr {
+  display: none;
+  border: 0;
+  padding: 0;
+  height: 1px;
+  margin: 2px 0;
+  background-color: var(--color-border);
+  pointer-events: none;
+}
+
+.folder > #bookmark-add-bookmark,
+.folder > #bookmark-add-folder,
+.folder > #bookmark-set-as-startup,
+.folder > #bookmark-open-all,
+.folder > #bookmark-edit-folder,
+.folder > #bookmark-delete,
+.folder > hr {
+  display: block;
+}
+.link > #bookmark-new-tab,
+.link > #bookmark-new-tab-background,
+.link > #bookmark-new-incognito-window,
+.link > #bookmark-add-bookmark,
+.link > #bookmark-add-folder,
+.link > #bookmark-update-url,
+.link > #bookmark-edit,
+.link > #bookmark-delete,
+.link > hr {
+  display: block;
+}
+.nodata > #bookmark-add-bookmark,
+.nodata > #bookmark-add-folder {
+  display: block;
+}
+
+[type=search] > #bookmark-add-bookmark,
+[type=search] > #bookmark-add-folder {
+  display: none;
+}
+#bookmark-location {
+  display: none !important;
+}
+[type=search] > #bookmark-location {
+  display: block !important;
+}
+.nodata[type=search] {
+  display: none;
+}
+
+
+.textbox {
+  margin: 10px 0;
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  color: var(--color-text);
+  background-color: var(--color-input-background);
+  word-break: break-all;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-user-modify: read-write-plaintext-only;
+}
+.textbox:empty::before {
+  content: attr(placeholder);
+}
+
+.dialog-btns {
+  display: flex;
+  justify-content: space-evenly;
+}
+#dialog input:focus,
+#dialog .textbox:focus {
+  border-bottom-color: var(--color-textbox-focus-border);
+}
+
+#edit-dialog-text,
+#confirm-title {
+  text-align: center;
+  font-size: 1.3em;
+}
+#edit-dialog-name {
+  padding: 1px 3px;
+  max-height: 15vh;
+}
+#edit-dialog-url {
+  padding: 3px;
+  max-height: 60vh;
+}
+.title {
+  padding: 1px 10px;
+  border-radius: 5px;
+  background-color: var(--color-hover);
+}
+#confirm-content {
+  margin: 10px 3px;
+  text-align: center;
+  white-space: pre-line;
+}
+
+/* 深色模式 */
+.dark .favicon {
+  filter: brightness(0.8) contrast(1.25);
+}
+
+.dark svg {
+  fill: var(--color-text);
+}
