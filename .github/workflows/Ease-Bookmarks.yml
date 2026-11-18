@@ -1,101 +1,189 @@
-name: Ease-Bookmarks
+name: Sign Firefox Extension
 
 on:
   workflow_dispatch:
     inputs:
-      version_tag:
-        description: '版本号，默认：0.1.1'
-        required: true
-        type: string
-        default: "0.1.1"
       extend_name:
-        default: "Ease-Bookmarks"
-        description: '扩展名称，默认：Ease-Bookmarks'
+        description: '扩展目录名（仓库根目录下的文件夹名）'
         required: true
         type: string
+        default: "Ease-Bookmarks"
+      version_tag:
+        description: '版本号，留空则使用 manifest.json 里的版本（同一扩展每次签名版本号不能重复）'
+        required: false
+        type: string
+        default: ""
+      manifest_dir:
+        description: 'manifest.json 所在目录（相对扩展目录，如 src），留空自动查找'
+        required: false
+        type: string
+        default: ""
+      addon_id:
+        description: '扩展 ID（如 ease-bookmarks@yourname），留空则保留 manifest 里的 ID'
+        required: false
+        type: string
+        default: ""
 
 jobs:
   sign_and_commit:
     runs-on: ubuntu-latest
-    env:
-      SOURCE_DIR: "Ease-Bookmarks"
     permissions:
       contents: write # 授予写入仓库内容的权限
+    env:
+      EXT_NAME: ${{ inputs.extend_name }}
+      INPUT_VERSION: ${{ inputs.version_tag }}
+      INPUT_MANIFEST_DIR: ${{ inputs.manifest_dir }}
+      INPUT_ADDON_ID: ${{ inputs.addon_id }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0 # 获取完整的历史记录，以便进行新的提交
+          fetch-depth: 0
+          submodules: recursive # 扩展目录如果是子模块也能拉下来
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' # 或者您项目所需的 Node.js 版本
+          node-version: '22'
 
       - name: Install web-ext
         run: npm install -g web-ext
 
-      - name: Update Manifest Version
+      - name: Locate manifest.json
+        id: locate
         run: |
-          # 确保 jq 已安装（GitHub Runner 默认自带）
-          # 读取输入参数并修改 manifest.json 中的 version 字段
-          # 注意：这里假设你的 manifest.json 在 ${{ env.SOURCE_DIR }} 目录下
-          jq '.version = "${{ github.event.inputs.version_tag }}"' ${{ env.SOURCE_DIR }}/manifest.json > manifest.json.tmp && mv manifest.json.tmp ${{ env.SOURCE_DIR }}/manifest.json
-          
-          echo "Successfully updated manifest.json to version ${{ github.event.inputs.version_tag }}"
+          if [ ! -d "$EXT_NAME" ]; then
+            echo "::error::仓库根目录下找不到文件夹：$EXT_NAME"
+            exit 1
+          fi
+
+          # 是否是有效的扩展 manifest（必须有 manifest_version 字段）
+          is_ext_manifest() { [ -f "$1" ] && jq -e '.manifest_version' "$1" >/dev/null 2>&1; }
+
+          MANIFEST=""
+          if [ -n "$INPUT_MANIFEST_DIR" ]; then
+            # 手动指定了目录
+            MANIFEST="$EXT_NAME/$INPUT_MANIFEST_DIR/manifest.json"
+            is_ext_manifest "$MANIFEST" || { echo "::error::$MANIFEST 不存在或不是扩展的 manifest"; exit 1; }
+          else
+            # 先查常见位置
+            for p in "$EXT_NAME/manifest.json" "$EXT_NAME/src/manifest.json" "$EXT_NAME/extension/manifest.json" \
+                     "$EXT_NAME/addon/manifest.json" "$EXT_NAME/app/manifest.json" "$EXT_NAME/dist/manifest.json"; do
+              if is_ext_manifest "$p"; then MANIFEST="$p"; break; fi
+            done
+            # 再按目录深度由浅到深搜索
+            if [ -z "$MANIFEST" ]; then
+              while read -r _ p; do
+                if is_ext_manifest "$p"; then MANIFEST="$p"; break; fi
+              done < <(find "$EXT_NAME" -maxdepth 4 -name manifest.json \
+                         -not -path '*/node_modules/*' -not -path '*/.git/*' \
+                         -printf '%d %p\n' | sort -n)
+            fi
+          fi
+
+          if [ -z "$MANIFEST" ]; then
+            echo "::error::在 $EXT_NAME 下没有找到扩展的 manifest.json"
+            exit 1
+          fi
+
+          SRC_DIR=$(dirname "$MANIFEST")
+          echo "找到 manifest：$MANIFEST"
+          echo "src_dir=$SRC_DIR" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare build directory
+        id: prep
+        env:
+          SRC_DIR: ${{ steps.locate.outputs.src_dir }}
+        run: |
+          # 复制到临时目录再修改，不改动仓库里的源文件
+          BUILD_DIR="$RUNNER_TEMP/build"
+          rm -rf "$BUILD_DIR"
+          cp -r "$SRC_DIR" "$BUILD_DIR"
+          M="$BUILD_DIR/manifest.json"
+
+          # 版本号：手动输入优先，否则用 manifest 里的
+          if [ -n "$INPUT_VERSION" ]; then
+            VERSION="$INPUT_VERSION"
+            jq --arg v "$VERSION" '.version = $v' "$M" > "$M.tmp" && mv "$M.tmp" "$M"
+          else
+            VERSION=$(jq -r '.version' "$M")
+          fi
+
+          # 扩展 ID：MV2 旧写法用 applications，新写法用 browser_specific_settings
+          if [ -n "$INPUT_ADDON_ID" ]; then
+            if jq -e '.applications' "$M" >/dev/null; then
+              jq --arg id "$INPUT_ADDON_ID" '.applications.gecko.id = $id' "$M" > "$M.tmp"
+            else
+              jq --arg id "$INPUT_ADDON_ID" '.browser_specific_settings.gecko.id = $id' "$M" > "$M.tmp"
+            fi
+            mv "$M.tmp" "$M"
+          fi
+
+          ADDON_ID=$(jq -r '.browser_specific_settings.gecko.id // .applications.gecko.id // empty' "$M")
+          if [ -z "$ADDON_ID" ]; then
+            echo "::warning::manifest 中没有扩展 ID，AMO 会自动分配，但以后每次签名都会变成一个新扩展，建议填写 addon_id"
+          fi
+
+          # 新提交到 AMO 的扩展需要声明数据收集权限，缺少时补上"不收集"
+          if ! jq -e '(.browser_specific_settings.gecko.data_collection_permissions // .applications.gecko.data_collection_permissions)' "$M" >/dev/null; then
+            if jq -e '.applications' "$M" >/dev/null; then
+              jq '.applications.gecko.data_collection_permissions = {"required": ["none"]}' "$M" > "$M.tmp"
+            else
+              jq '.browser_specific_settings.gecko.data_collection_permissions = {"required": ["none"]}' "$M" > "$M.tmp"
+            fi
+            mv "$M.tmp" "$M"
+          fi
+
+          echo "版本：$VERSION，ID：${ADDON_ID:-（自动分配）}"
+          echo "build_dir=$BUILD_DIR" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Build and Sign Extension
-        run: web-ext sign --source-dir ${{env.SOURCE_DIR}} --api-key ${{ secrets.AMO_ISSUER }} --api-secret ${{ secrets.AMO_SECRET }} --artifacts-dir ./web-ext-artifacts --channel "unlisted"
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_ISSUER }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_SECRET }}
-
-      - name: Create Releases Directory if not exists
-        run: mkdir -p ./releases # 创建 releases 目录，如果不存在
-
-      - name: Find Signed XPI File
-        id: find_xpi
+          BUILD_DIR: ${{ steps.prep.outputs.build_dir }}
         run: |
-          SIGNED_XPI_PATH=$(find ./web-ext-artifacts -name "*.xpi" -print -quit)
-          if [ -z "$SIGNED_XPI_PATH" ]; then
+          web-ext sign \
+            --source-dir "$BUILD_DIR" \
+            --artifacts-dir "$RUNNER_TEMP/web-ext-artifacts" \
+            --channel unlisted
+
+      - name: Move Signed XPI to Releases Directory
+        id: move
+        env:
+          VERSION: ${{ steps.prep.outputs.version }}
+        run: |
+          SIGNED_XPI=$(find "$RUNNER_TEMP/web-ext-artifacts" -name "*.xpi" -print -quit)
+          if [ -z "$SIGNED_XPI" ]; then
             echo "::error::未找到签名后的 .xpi 文件！"
             exit 1
           fi
-          echo "FOUND_XPI_PATH=$SIGNED_XPI_PATH" >> $GITHUB_OUTPUT
+          mkdir -p "releases/$EXT_NAME"
+          DEST="releases/$EXT_NAME/${EXT_NAME}_${VERSION}.xpi"
+          mv "$SIGNED_XPI" "$DEST"
+          echo "Moved to $DEST"
+          echo "xpi_path=$DEST" >> "$GITHUB_OUTPUT"
 
-      - name: Move Signed XPI to Releases Directory
-        run: |
-          # 创建特定扩展名的存放目录
-          mkdir -p "./releases/${{ github.event.inputs.extend_name }}"
-          # 定义新文件名
-          NEW_FILENAME="${{ github.event.inputs.extend_name }}_${{ github.event.inputs.version_tag }}.xpi"
-          # 执行移动
-          mv "${{ steps.find_xpi.outputs.FOUND_XPI_PATH }}" "./releases/${{ github.event.inputs.extend_name }}/$NEW_FILENAME"
-          # 日志输出
-          echo "Moved to ./releases/${{ github.event.inputs.extend_name }}/$NEW_FILENAME"
-
-      - name: Configure Git
+      - name: Commit and Push Signed XPI
+        env:
+          VERSION: ${{ steps.prep.outputs.version }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add releases/
+          if git diff --cached --quiet; then
+            echo "没有新文件需要提交"
+            exit 0
+          fi
+          git commit -m "feat: Add signed $EXT_NAME $VERSION"
+          # 运行期间仓库可能有新提交，先同步再推送
+          git pull --rebase
+          git push
 
-      - name: Add and Commit Signed XPI
-        run: |
-          git add ./releases/
-          git commit -m "feat: Add signed Firefox extension for ${{ github.event.inputs.version_tag }}"
-          echo "Committed signed XPI."
-
-      - name: Push Changes
-        run: git push
-        # 注意：默认情况下，git push 会推送到触发工作流的同一分支
-        # 如果你希望推送到特定分支，例如 'releases'，则可以修改为：
-        # run: git push origin HEAD:releases # 将当前 HEAD 推送到 releases 分支
-
-      - name: Upload Signed XPI as Artifact (Optional)
+      - name: Upload Signed XPI as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${github.event.inputs.extend_name}}-${{ github.event.inputs.version_tag }}
-          path: ./releases/*.xpi
-          # 可以选择也作为 artifact 上传，以便在 GitHub Actions UI 中方便下载
+          name: ${{ inputs.extend_name }}-${{ steps.prep.outputs.version }}
+          path: ${{ steps.move.outputs.xpi_path }}
